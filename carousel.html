@@ -1,0 +1,875 @@
+<!-- ============================================ -->
+<!-- COMPONENTE: Galería de Arte Moderna          -->
+<!-- SCROLL CONTINUO + FLECHAS SINCRONIZADAS     -->
+<!-- MÓVIL: SINGLE SLIDE VIEW CON SWIPE          -->
+<!-- ============================================ -->
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<div class="glr-gallery-container">
+    <div class="glr-gallery-header">
+        <h1 class="glr-main-title">
+            <i class="fa-solid fa-palette glr-title-icon"></i>
+            <span class="glr-title-text">diseño gráfico, branding, logos</span>
+        </h1>
+        <div class="glr-title-divider">
+            <span class="glr-divider-line"></span>
+            <span class="glr-divider-diamond"><i class="fa-solid fa-diamond"></i></span>
+            <span class="glr-divider-line"></span>
+        </div>
+        <p class="glr-subtitle">Clic en cualquier imagen para vista completa</p>
+    </div>
+    
+    <div class="glr-gallery-track" id="glr-galleryTrack"></div>
+
+    <div class="glr-nav-arrows">
+        <button class="glr-arrow-btn glr-arrow-prev" id="glr-prevBtn">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </button>
+        <button class="glr-arrow-btn glr-arrow-next" id="glr-nextBtn">  
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+        </button>
+    </div>
+
+    <div class="glr-slide-counter">
+        <span id="glr-currentIdx">01</span> / <span id="glr-totalSlides">11</span>
+    </div>
+</div>
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+.glr-gallery-container * { margin: 0; padding: 0; box-sizing: border-box; }
+
+.glr-gallery-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 800px;
+    overflow: hidden;
+    font-family: 'Lato', 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, rgba(88, 28, 135, 0.15) 0%, rgba(15, 5, 30, 0.95) 100%),
+                url('img/fondo.png') no-repeat center center;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+/* HEADER */
+.glr-gallery-header {
+    position: absolute;
+    top: 25px; left: 0; right: 0;
+    text-align: center;
+    z-index: 100;
+    padding: 0 20px;
+    animation: glr-header-entrance 1s ease-out forwards;
+}
+@keyframes glr-header-entrance {
+    0% { opacity: 0; transform: translateY(-30px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+.glr-main-title {
+    font-family: 'Playfair Display', 'Georgia', serif;
+    font-size: 1.9rem; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    margin: 0 0 6px 0;
+    display: inline-flex; align-items: center; gap: 15px;
+    color: #ffffff; position: relative;
+}
+.glr-title-icon {
+    font-size: 1.5rem;
+    background: linear-gradient(135deg, #ff6bb5, #a02078, #d478b0);
+    background-clip: text; -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 10px rgba(160, 32, 120, 0.8));
+    animation: glr-icon-pulse 2.5s ease-in-out infinite;
+}
+@keyframes glr-icon-pulse {
+    0%, 100% { filter: drop-shadow(0 0 10px rgba(160, 32, 120, 0.8)); transform: scale(1) rotate(0deg); }
+    50% { filter: drop-shadow(0 0 20px rgba(255, 107, 181, 1)) drop-shadow(0 0 30px rgba(160, 32, 120, 0.6)); transform: scale(1.1) rotate(5deg); }
+}
+.glr-title-text {
+    background: linear-gradient(90deg, #ffffff 0%, #ffffff 35%, #f0c0e8 45%, #d478b0 50%, #f0c0e8 55%, #ffffff 65%, #ffffff 100%);
+    background-size: 300% 100%;
+    background-clip: text; -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: glr-shine-effect 5s ease-in-out infinite;
+    filter: drop-shadow(0 2px 8px rgba(160, 32, 120, 0.3));
+}
+@keyframes glr-shine-effect {
+    0% { background-position: 300% center; }
+    100% { background-position: -300% center; }
+}
+.glr-title-divider {
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px; margin-bottom: 8px;
+    animation: glr-divider-appear 1.2s ease-out 0.3s both;
+}
+@keyframes glr-divider-appear {
+    0% { opacity: 0; transform: scaleX(0); }
+    100% { opacity: 1; transform: scaleX(1); }
+}
+.glr-divider-line {
+    display: inline-block; width: 60px; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(160, 32, 120, 0.8), transparent);
+    animation: glr-line-glow 3s ease-in-out infinite;
+}
+@keyframes glr-line-glow {
+    0%, 100% { opacity: 0.5; box-shadow: 0 0 5px rgba(160, 32, 120, 0.3); }
+    50% { opacity: 1; box-shadow: 0 0 10px rgba(160, 32, 120, 0.6); }
+}
+.glr-divider-diamond {
+    color: #a02078; font-size: 0.6rem;
+    animation: glr-diamond-spin 4s linear infinite;
+    filter: drop-shadow(0 0 5px rgba(160, 32, 120, 0.8));
+}
+@keyframes glr-diamond-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.glr-subtitle {
+    font-family: 'Lato', 'Segoe UI', sans-serif;
+    font-size: 0.85rem; font-weight: 400;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 1.5px; text-transform: uppercase; margin: 0;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3), 0 2px 4px rgba(0, 0, 0, 0.4);
+    animation: glr-subtitle-fade 1s ease-out 0.5s both, glr-subtitle-glow 3s ease-in-out 1.5s infinite;
+}
+@keyframes glr-subtitle-fade {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes glr-subtitle-glow {
+    0%, 100% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.3), 0 2px 4px rgba(0, 0, 0, 0.4); }
+    50% { text-shadow: 0 0 15px rgba(255, 255, 255, 0.5), 0 0 20px rgba(160, 32, 120, 0.3), 0 2px 4px rgba(0, 0, 0, 0.4); }
+}
+.glr-main-title:hover .glr-title-icon { animation: glr-icon-hover 0.6s ease forwards; }
+@keyframes glr-icon-hover {
+    0% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.3) rotate(15deg); }
+    100% { transform: scale(1.1) rotate(0deg); }
+}
+
+/* TRACK */
+.glr-gallery-track {
+    display: flex;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    height: 100%;
+    align-items: center;
+    gap: 40px;
+    padding: 0;
+    will-change: transform;
+}
+
+.glr-gallery-item {
+    flex-shrink: 0;
+    width: 520px;
+    height: 540px;
+    position: relative;
+    transition: all 0.4s ease;
+    cursor: pointer;
+}
+.glr-gallery-item.glr-active { transform: scale(1.08); z-index: 10; }
+.glr-gallery-item.glr-prev,
+.glr-gallery-item.glr-next { transform: scale(0.92); opacity: 0.5; }
+.glr-gallery-item.glr-hidden { opacity: 0; transform: scale(0.85); pointer-events: none; }
+
+.glr-image-wrapper {
+    position: relative; width: 100%; height: 100%;
+    border-radius: 12px; overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(135deg, #57575700 0%, #0000008e 100%);
+}
+.glr-gallery-image {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform 0.5s ease;
+}
+.glr-gallery-item:hover .glr-gallery-image { transform: scale(1.05); }
+.glr-image-frame {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    border-radius: 12px; pointer-events: none;
+}
+
+/* FLECHAS */
+.glr-nav-arrows {
+    position: absolute; top: 50%; left: 0; right: 0;
+    transform: translateY(-50%);
+    display: flex; justify-content: space-between;
+    padding: 0 30px; z-index: 100; pointer-events: none;
+}
+.glr-arrow-btn {
+    width: 60px; height: 60px; border-radius: 50%;
+    background: transparent; backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.3s ease;
+    color: rgba(255, 255, 255, 0.8); pointer-events: auto;
+    box-shadow: 0 0 0 rgba(128, 0, 96, 0);
+}
+.glr-arrow-btn:hover {
+    background: rgba(128, 0, 96, 0.15);
+    border-color: rgba(160, 32, 120, 0.6);
+    color: #a02078;
+    box-shadow: 0 0 25px rgba(128, 0, 96, 0.5), 0 0 50px rgba(160, 32, 120, 0.2);
+    transform: scale(1.05);
+}
+.glr-arrow-btn:active { transform: scale(0.98); box-shadow: 0 0 15px rgba(128, 0, 96, 0.7); }
+
+.glr-slide-counter {
+    position: absolute; bottom: 45px; left: 40px;
+    font-size: 0.8rem;
+    background: rgba(26, 15, 46, 0.7); backdrop-filter: blur(8px);
+    padding: 6px 16px; border-radius: 40px;
+    border: 1px solid rgba(128, 0, 96, 0.4);
+    color: #cbd5e1; z-index: 100;
+}
+.glr-slide-counter span:first-child { color: #a02078; font-weight: 600; }
+
+.glr-loading-placeholder {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #000000d8 0%, #1a0f2e 100%);
+    color: #0e020a; font-size: 1.2rem; font-weight: 300;
+    text-align: center; flex-direction: column;
+}
+
+/* ============================================ */
+/* RESPONSIVE - MÓVIL CORREGIDO                 */
+/* ============================================ */
+@media (max-width: 1024px) {
+    .glr-main-title { font-size: 1.7rem; gap: 12px; }
+    .glr-title-icon { font-size: 1.3rem; }
+    .glr-subtitle { font-size: 0.8rem; letter-spacing: 1.2px; }
+    .glr-divider-line { width: 50px; }
+    .glr-gallery-item { width: 360px; height: 340px; }
+    .glr-gallery-track { gap: 30px; }
+    .glr-arrow-btn { width: 50px; height: 50px; }
+    .glr-arrow-btn svg { width: 24px; height: 24px; }
+    .glr-nav-arrows { padding: 0 20px; }
+}
+
+/* ✅ MÓVIL: Single slide view - track horizontal con 1 item visible */
+@media (max-width: 768px) {
+    .glr-gallery-container {
+        height: 100vh;
+        min-height: 100vh;
+        overflow: hidden;
+    }
+    .glr-gallery-header {
+        position: absolute;
+        top: 15px; left: 0; right: 0;
+        z-index: 100;
+        padding: 0 15px;
+    }
+    .glr-main-title {
+        font-size: 1.2rem;
+        letter-spacing: 1.5px;
+        margin-bottom: 4px;
+        gap: 8px;
+    }
+    .glr-title-icon { font-size: 1rem; }
+    .glr-subtitle { font-size: 0.65rem; letter-spacing: 1px; }
+    .glr-divider-line { width: 30px; }
+    .glr-divider-diamond { font-size: 0.45rem; }
+    .glr-title-divider { margin-bottom: 4px; }
+
+    /* ✅ TRACK HORIZONTAL - NO flex-direction: column */
+    .glr-gallery-track {
+        flex-direction: row; /* Mantener horizontal */
+        padding: 0;
+        gap: 0; /* Sin gap, el centrado se hace con padding en items */
+        transform: translateX(0);
+        height: calc(100vh - 140px);
+        margin-top: 120px;
+        align-items: center;
+        transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    /* ✅ Cada item ocupa el 100% del viewport */
+    .glr-gallery-item {
+        width: 100vw;
+        height: 100%;
+        max-width: 100vw;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 20px;
+        transform: scale(1) !important;
+        opacity: 1 !important;
+    }
+    .glr-gallery-item.glr-prev,
+    .glr-gallery-item.glr-next,
+    .glr-gallery-item.glr-hidden {
+        opacity: 1 !important;
+        transform: scale(1) !important;
+        display: flex;
+    }
+    .glr-gallery-item.glr-active {
+        transform: scale(1) !important;
+    }
+
+    .glr-image-wrapper {
+        width: 100%;
+        max-width: 360px;
+        height: auto;
+        aspect-ratio: 4 / 5;
+        border-radius: 16px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    /* ✅ FLECHAS más pequeñas y pegadas a los bordes */
+    .glr-nav-arrows {
+        position: absolute;
+        top: 50%; left: 0; right: 0;
+        transform: translateY(-50%);
+        padding: 0 8px;
+        z-index: 150;
+        pointer-events: none;
+        justify-content: space-between;
+    }
+    .glr-arrow-btn {
+        width: 44px; height: 44px;
+        background: rgba(26, 15, 46, 0.6);
+        backdrop-filter: blur(6px);
+        border: 1px solid rgba(160, 32, 120, 0.4);
+        pointer-events: auto;
+    }
+    .glr-arrow-btn svg { width: 20px; height: 20px; }
+
+    /* ✅ CONTADOR centrado abajo */
+    .glr-slide-counter {
+        position: absolute;
+        bottom: 20px; left: 50%;
+        transform: translateX(-50%);
+        z-index: 150;
+        background: rgba(26, 15, 46, 0.85);
+        white-space: nowrap;
+        font-size: 0.7rem;
+        padding: 5px 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .glr-main-title { font-size: 1rem; gap: 6px; }
+    .glr-title-icon { font-size: 0.85rem; }
+    .glr-subtitle { font-size: 0.6rem; letter-spacing: 0.8px; }
+    .glr-divider-line { width: 22px; }
+    .glr-arrow-btn { width: 38px; height: 38px; }
+    .glr-arrow-btn svg { width: 18px; height: 18px; }
+    .glr-image-wrapper { max-width: 300px; }
+}
+
+@media (min-width: 1400px) {
+    .glr-main-title { font-size: 2.2rem; gap: 18px; }
+    .glr-title-icon { font-size: 1.7rem; }
+    .glr-subtitle { font-size: 0.9rem; }
+    .glr-divider-line { width: 80px; }
+    .glr-gallery-item { width: 550px; height: 500px; }
+    .glr-gallery-track { gap: 50px; }
+    .glr-nav-arrows { padding: 0 60px; }
+    .glr-arrow-btn { width: 70px; height: 70px; }
+    .glr-arrow-btn svg { width: 32px; height: 32px; }
+}
+</style>
+
+<script>
+(function() {
+    const AUTO_SCROLL_ENABLED = true;
+    const AUTO_SCROLL_PAUSE_ON_HOVER = true;
+    const CONTINUOUS_SCROLL_SPEED = 0.95;
+
+    const obras = [
+        { titulo: "Amanecer Eterno" }, { titulo: "Silencio Geométrico" },
+        { titulo: "Horizontes Lejanos" }, { titulo: "El Vacío" },
+        { titulo: "Raíces Profundas" }, { titulo: "Sueños Líquidos" },
+        { titulo: "Resplandor Nocturno" }, { titulo: "Estructuras" },
+        { titulo: "Jardín Secreto" }, { titulo: "Memoria Fragmentada" },
+        { titulo: "Renacer" }
+    ];
+
+    const imagePaths = [
+        './img/foto (9).jpg', './img/foto (2).jpg', './img/foto (3).jpg',
+        './img/foto (4).jpg', './img/foto (5).jpg', './img/foto (6).jpg',
+        './img/foto (7).jpg', './img/foto (8).jpg', './img/fotis.jpg',
+        './img/foto (10).jpg', './img/foto (11).jpg'
+    ];
+
+    let currentIndex = 0;
+    let currentOffset = 0;
+    let itemWidth = 520;
+    let continuousScrollId = null;
+    let isUserInteracting = false;
+    let interactionTimeout = null;
+    let isSnapping = false;
+    let isInitialized = false;
+    let isMobile = false;
+
+    const track = document.getElementById('glr-galleryTrack');
+    const container = document.querySelector('.glr-gallery-container');
+    const totalSlides = obras.length;
+
+    if (!track) return;
+
+    function checkMobile() {
+        isMobile = window.innerWidth <= 768;
+    }
+
+    function createGalleryItems() {
+        track.innerHTML = '';
+        const itemsToCreate = [...obras, ...obras, ...obras];
+        const pathsToUse = [...imagePaths, ...imagePaths, ...imagePaths];
+
+        itemsToCreate.forEach((obra, index) => {
+            const item = document.createElement('div');
+            item.className = 'glr-gallery-item';
+            item.dataset.realIndex = index % obras.length;
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'glr-image-wrapper';
+
+            const img = document.createElement('img');
+            img.className = 'glr-gallery-image';
+            img.src = pathsToUse[index];
+            img.alt = obra.titulo;
+            img.loading = 'lazy';
+            img.draggable = false;
+
+            img.onerror = function() {
+                this.style.display = 'none';
+                const placeholder = document.createElement('div');
+                placeholder.className = 'glr-loading-placeholder';
+                placeholder.innerHTML = `
+                    <div style="text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 10px;">🎨</div>
+                        <div>Foto ${(index % obras.length) + 1}</div>
+                        <div style="font-size: 0.9rem; margin-top: 5px;">${obra.titulo}</div>
+                    </div>
+                `;
+                wrapper.appendChild(placeholder);
+            };
+
+            const frame = document.createElement('div');
+            frame.className = 'glr-image-frame';
+            wrapper.appendChild(img);
+            wrapper.appendChild(frame);
+            item.appendChild(wrapper);
+            track.appendChild(item);
+        });
+
+        const totalSpan = document.getElementById('glr-totalSlides');
+        if (totalSpan) totalSpan.textContent = obras.length.toString().padStart(2, '0');
+        updateItemWidth();
+    }
+
+    function updateItemWidth() {
+        const firstItem = track.querySelector('.glr-gallery-item');
+        if (firstItem) {
+            if (isMobile) {
+                // En móvil, cada item ocupa el ancho del viewport
+                itemWidth = window.innerWidth;
+            } else {
+                const width = firstItem.offsetWidth;
+                const gap = parseInt(getComputedStyle(track).gap) || 40;
+                itemWidth = width + gap;
+            }
+        }
+    }
+
+    // ✅ MÓVIL: Centrar el item actual en el viewport
+    function centerMobileSlide(animate = true) {
+        if (!isMobile) return;
+        const items = track.querySelectorAll('.glr-gallery-item');
+        // Buscar el item en la "segunda copia" (índices obras.length a 2*obras.length - 1)
+        let targetItem = null;
+        for (let item of items) {
+            if (parseInt(item.dataset.realIndex) === currentIndex) {
+                // Preferir la copia del medio
+                if (!targetItem || parseInt(item.dataset.realIndex) === currentIndex) {
+                    targetItem = item;
+                }
+            }
+        }
+        // Buscar específicamente en la segunda copia
+        const middleStart = obras.length;
+        const middleEnd = obras.length * 2;
+        for (let i = middleStart; i < middleEnd; i++) {
+            if (items[i] && parseInt(items[i].dataset.realIndex) === currentIndex) {
+                targetItem = items[i];
+                break;
+            }
+        }
+
+        if (!targetItem) return;
+
+        const offset = -(targetItem.offsetLeft);
+        if (animate) {
+            track.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        } else {
+            track.style.transition = 'none';
+        }
+        track.style.transform = `translateX(${offset}px)`;
+        currentOffset = offset;
+        updateCounter();
+    }
+
+    function getOffsetForIndex(targetRealIndex) {
+        const items = track.querySelectorAll('.glr-gallery-item');
+        let targetItem = null;
+
+        // En móvil, usar la copia del medio
+        if (isMobile) {
+            const middleStart = obras.length;
+            const middleEnd = obras.length * 2;
+            for (let i = middleStart; i < middleEnd; i++) {
+                if (items[i] && parseInt(items[i].dataset.realIndex) === targetRealIndex) {
+                    targetItem = items[i];
+                    break;
+                }
+            }
+        } else {
+            for (let item of items) {
+                if (parseInt(item.dataset.realIndex) === targetRealIndex) {
+                    targetItem = item;
+                    break;
+                }
+            }
+        }
+
+        if (!targetItem) return 0;
+
+        if (isMobile) {
+            return -(targetItem.offsetLeft);
+        }
+
+        const containerWidth = container.clientWidth;
+        const targetRect = targetItem.getBoundingClientRect();
+        const targetCenter = targetRect.left + targetRect.width / 2;
+        const containerCenter = containerWidth / 2;
+        return currentOffset + (containerCenter - targetCenter);
+    }
+
+    function centerOnFirstImage() {
+        currentIndex = 0;
+        if (isMobile) {
+            centerMobileSlide(false);
+        } else {
+            const items = track.querySelectorAll('.glr-gallery-item');
+            let firstRealItem = null;
+            for (let item of items) {
+                if (parseInt(item.dataset.realIndex) === 0) {
+                    firstRealItem = item;
+                    break;
+                }
+            }
+            if (!firstRealItem) return;
+            const containerWidth = container.clientWidth;
+            const targetRect = firstRealItem.getBoundingClientRect();
+            const targetCenter = targetRect.left + targetRect.width / 2;
+            const containerCenter = containerWidth / 2;
+            currentOffset = currentOffset + (containerCenter - targetCenter);
+            track.style.transition = 'none';
+            track.style.transform = `translateX(${currentOffset}px)`;
+            void track.offsetHeight;
+        }
+        updateVisualState();
+        updateCounter();
+    }
+
+    function updateCounter() {
+        const currentIdxSpan = document.getElementById('glr-currentIdx');
+        if (currentIdxSpan) currentIdxSpan.textContent = (currentIndex + 1).toString().padStart(2, '0');
+    }
+
+    function updateVisualState() {
+        const items = track.querySelectorAll('.glr-gallery-item');
+
+        if (isMobile) {
+            // En móvil: solo marcar el activo, sin ocultar los demás
+            items.forEach((item) => {
+                item.classList.remove('glr-active', 'glr-prev', 'glr-next', 'glr-hidden');
+                if (parseInt(item.dataset.realIndex) === currentIndex) {
+                    item.classList.add('glr-active');
+                }
+            });
+            return;
+        }
+
+        const containerWidth = container.clientWidth;
+        const centerX = containerWidth / 2;
+        let closestRealIndex = 0;
+        let minDistance = Infinity;
+
+        items.forEach((item) => {
+            const rect = item.getBoundingClientRect();
+            const itemCenter = rect.left + rect.width / 2;
+            const distance = Math.abs(itemCenter - centerX);
+            if (distance < minDistance) {
+                minDistance = distance;
+                closestRealIndex = parseInt(item.dataset.realIndex);
+            }
+        });
+
+        if (closestRealIndex !== undefined && !isSnapping) {
+            currentIndex = closestRealIndex;
+            updateCounter();
+        }
+
+        items.forEach((item) => {
+            item.classList.remove('glr-active', 'glr-prev', 'glr-next', 'glr-hidden');
+            const rect = item.getBoundingClientRect();
+            const itemCenter = rect.left + rect.width / 2;
+            const distance = Math.abs(itemCenter - centerX);
+            if (distance < rect.width * 0.6) {
+                item.classList.add('glr-active');
+            } else if (distance < rect.width * 2) {
+                item.classList.add(itemCenter < centerX ? 'glr-prev' : 'glr-next');
+            } else {
+                item.classList.add('glr-hidden');
+            }
+        });
+    }
+
+    // ✅ MÓVIL: Navegación por índice (sin auto-scroll continuo)
+    function mobileGoTo(newIndex) {
+        if (isSnapping) return;
+        isSnapping = true;
+
+        if (newIndex < 0) newIndex = obras.length - 1;
+        if (newIndex >= obras.length) newIndex = 0;
+        currentIndex = newIndex;
+
+        centerMobileSlide(true);
+        updateVisualState();
+
+        setTimeout(() => {
+            isSnapping = false;
+        }, 550);
+    }
+
+    // Desktop: scroll continuo
+    function startContinuousScroll() {
+        if (!AUTO_SCROLL_ENABLED || isMobile) return;
+        if (isUserInteracting || isSnapping) return;
+
+        if (continuousScrollId) {
+            cancelAnimationFrame(continuousScrollId);
+            continuousScrollId = null;
+        }
+        track.style.transition = 'none';
+
+        function animateScroll() {
+            if (!AUTO_SCROLL_ENABLED || isUserInteracting || isSnapping || isMobile) {
+                continuousScrollId = null;
+                return;
+            }
+            currentOffset -= CONTINUOUS_SCROLL_SPEED;
+            const totalWidth = itemWidth * obras.length;
+            if (Math.abs(currentOffset) >= totalWidth) {
+                currentOffset = 0;
+                track.style.transform = `translateX(0px)`;
+                updateVisualState();
+            } else {
+                track.style.transform = `translateX(${currentOffset}px)`;
+                updateVisualState();
+            }
+            continuousScrollId = requestAnimationFrame(animateScroll);
+        }
+        animateScroll();
+    }
+
+    function stopContinuousScroll() {
+        if (continuousScrollId) {
+            cancelAnimationFrame(continuousScrollId);
+            continuousScrollId = null;
+        }
+    }
+
+    function snapToImage(targetIndex) {
+        if (isSnapping) return;
+        if (isMobile) {
+            mobileGoTo(targetIndex);
+            return;
+        }
+
+        isSnapping = true;
+        stopContinuousScroll();
+
+        let newIndex = targetIndex;
+        if (newIndex < 0) newIndex = obras.length - 1;
+        if (newIndex >= obras.length) newIndex = 0;
+
+        const targetOffset = getOffsetForIndex(newIndex);
+        if (targetOffset !== undefined) {
+            currentOffset = targetOffset;
+            track.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            track.style.transform = `translateX(${currentOffset}px)`;
+
+            setTimeout(() => {
+                track.style.transition = '';
+                isSnapping = false;
+                currentIndex = newIndex;
+                updateVisualState();
+                updateCounter();
+                if (AUTO_SCROLL_ENABLED && !isUserInteracting && !isMobile) {
+                    startContinuousScroll();
+                }
+            }, 550);
+        } else {
+            isSnapping = false;
+            if (AUTO_SCROLL_ENABLED && !isUserInteracting && !isMobile) startContinuousScroll();
+        }
+    }
+
+    function nextSlide() {
+        if (isSnapping) return;
+        snapToImage((currentIndex + 1) % obras.length);
+    }
+
+    function prevSlide() {
+        if (isSnapping) return;
+        snapToImage((currentIndex - 1 + obras.length) % obras.length);
+    }
+
+    function handleUserInteraction() {
+        if (isSnapping) return;
+        isUserInteracting = true;
+        stopContinuousScroll();
+        if (interactionTimeout) clearTimeout(interactionTimeout);
+        interactionTimeout = setTimeout(() => {
+            isUserInteracting = false;
+            if (AUTO_SCROLL_ENABLED && !isMobile) startContinuousScroll();
+        }, 800);
+    }
+
+    function forceStartAutoScroll() {
+        if (!AUTO_SCROLL_ENABLED || isMobile) return;
+        isUserInteracting = false;
+        isSnapping = false;
+        startContinuousScroll();
+    }
+
+    // ✅ Swipe mejorado para móvil
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchStartTime = 0;
+    let isSwiping = false;
+
+    function handleTouchStart(e) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        touchStartTime = Date.now();
+        isSwiping = false;
+        handleUserInteraction();
+    }
+
+    function handleTouchMove(e) {
+        if (!isMobile) return;
+        const diffX = e.touches[0].clientX - touchStartX;
+        const diffY = e.touches[0].clientY - touchStartY;
+        // Solo considerar swipe horizontal
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 10) {
+            isSwiping = true;
+        }
+    }
+
+    function handleTouchEnd(e) {
+        if (!isMobile || !isSwiping) return;
+        const touchEndX = e.changedTouches[0].clientX;
+        const diff = touchEndX - touchStartX;
+        const elapsed = Date.now() - touchStartTime;
+        const velocity = Math.abs(diff) / elapsed;
+
+        // Umbral más sensible: 40px o swipe rápido
+        if (Math.abs(diff) > 40 || velocity > 0.4) {
+            if (diff > 0) prevSlide();
+            else nextSlide();
+        }
+        isSwiping = false;
+    }
+
+    function init() {
+        checkMobile();
+        createGalleryItems();
+
+        setTimeout(() => {
+            updateItemWidth();
+            centerOnFirstImage();
+            isInitialized = true;
+            if (!isMobile) {
+                setTimeout(() => forceStartAutoScroll(), 300);
+                setTimeout(() => { if (!continuousScrollId) forceStartAutoScroll(); }, 800);
+                setTimeout(() => { if (!continuousScrollId) forceStartAutoScroll(); }, 1500);
+            }
+        }, 150);
+
+        const prevBtn = document.getElementById('glr-prevBtn');
+        const nextBtn = document.getElementById('glr-nextBtn');
+
+        if (prevBtn) {
+            prevBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                handleUserInteraction();
+                prevSlide();
+            });
+        }
+        if (nextBtn) {
+            nextBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                handleUserInteraction();
+                nextSlide();
+            });
+        }
+
+        if (container && AUTO_SCROLL_PAUSE_ON_HOVER && !isMobile) {
+            container.addEventListener('mouseenter', () => {
+                isUserInteracting = true;
+                stopContinuousScroll();
+            });
+            container.addEventListener('mouseleave', () => {
+                setTimeout(() => {
+                    if (!isUserInteracting && AUTO_SCROLL_ENABLED && isInitialized && !isMobile) {
+                        forceStartAutoScroll();
+                    }
+                }, 300);
+            });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') { e.preventDefault(); handleUserInteraction(); prevSlide(); }
+            if (e.key === 'ArrowRight') { e.preventDefault(); handleUserInteraction(); nextSlide(); }
+        });
+
+        // ✅ Touch events mejorados
+        track.addEventListener('touchstart', handleTouchStart, { passive: true });
+        track.addEventListener('touchmove', handleTouchMove, { passive: true });
+        track.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+        window.addEventListener('resize', () => {
+            const wasMobile = isMobile;
+            checkMobile();
+            stopContinuousScroll();
+            setTimeout(() => {
+                updateItemWidth();
+                if (isInitialized) {
+                    if (isMobile) {
+                        centerMobileSlide(false);
+                    } else {
+                        const targetOffset = getOffsetForIndex(currentIndex);
+                        if (targetOffset !== undefined) {
+                            currentOffset = targetOffset;
+                            track.style.transition = 'none';
+                            track.style.transform = `translateX(${currentOffset}px)`;
+                        }
+                    }
+                    updateVisualState();
+                }
+                if (AUTO_SCROLL_ENABLED && !isUserInteracting && isInitialized && !isMobile) {
+                    forceStartAutoScroll();
+                }
+            }, 200);
+        });
+    }
+
+    init();
+})();
+</script>

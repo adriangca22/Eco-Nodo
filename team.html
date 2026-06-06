@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --bg: #050a10;
+      --bg2: #0d1f33;
+      --acc: #800060;
+      --acc2: #a02078;
+      --acc-light: #c94f9c;
+      --txt: #e0e6ed;
+      --muted: #8b95a5;
+    }
+    html, body { 
+      width:100%; 
+      background: #0a0e17;
+      color:var(--txt);
+      font-family:'DM Sans',system-ui,sans-serif; 
+      padding: 0.8rem;
+      margin:0;
+    }
+
+    /* contenedor principal - altura ampliada para evitar que quede corto */
+    .team-section {
+      width:100%; 
+      padding: 2rem 1.5rem 2rem;  /* más altura general */
+      background: 
+        radial-gradient(circle at 20% 35%, rgba(128, 0, 96, 0.12) 1.5px, transparent 1.5px),
+        radial-gradient(circle at 70% 85%, rgba(160, 32, 120, 0.1) 1.5px, transparent 1.5px),
+        repeating-linear-gradient(45deg, 
+          rgba(128, 0, 96, 0.05) 0px, 
+          rgba(128, 0, 96, 0.05) 2px,
+          transparent 2px,
+          transparent 12px),
+        repeating-linear-gradient(135deg, 
+          rgba(160, 32, 120, 0.04) 0px, 
+          rgba(160, 32, 120, 0.04) 1px,
+          transparent 1px,
+          transparent 10px),
+        linear-gradient(145deg, #071424 0%, #0c1526 35%, #120d24 100%);
+      background-blend-mode: overlay, normal, normal, normal;
+      border-radius:1.8rem; 
+      border:1px solid rgba(128,0,96,0.45);
+      box-shadow:0 25px 45px -15px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05);
+      position:relative; 
+      overflow-x: visible;
+      overflow-y: visible;
+      min-height: auto;
+    }
+    
+    .team-section::before {
+      content:''; 
+      position:absolute; 
+      inset:0;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.2"><path fill="none" stroke="%23800060" stroke-width="0.6" stroke-linecap="round" stroke-dasharray="2 6" d="M30 30 L 170 30 M30 60 L 170 60 M30 90 L 170 90 M30 120 L 170 120 M30 150 L 170 150 M30 180 L 170 180 M60 30 L 60 170 M90 30 L 90 170 M120 30 L 120 170 M150 30 L 150 170"/><circle cx="40" cy="40" r="2" fill="%23a02078" opacity="0.5"/><circle cx="160" cy="160" r="2.5" fill="%23c54f9c" opacity="0.4"/><circle cx="90" cy="140" r="1.8" fill="%23800060" opacity="0.6"/></svg>');
+      background-repeat: repeat;
+      background-size: 40px 40px;
+      pointer-events:none;
+      opacity: 0.3;
+      mix-blend-mode: overlay;
+      border-radius: inherit;
+    }
+    
+    .team-section::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 20% 30%, rgba(160, 32, 120, 0.08) 0%, transparent 60%),
+                  radial-gradient(ellipse at 85% 70%, rgba(128, 0, 96, 0.1) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+      border-radius: inherit;
+    }
+    
+    .team-heading, .team-circles, .skills-carousel {
+      position: relative;
+      z-index: 3;
+    }
+
+    /* TÍTULO */
+    .team-heading { text-align:center; margin-bottom: 1.8rem; gap: 0.4rem; }
+    .team-heading h2 {
+      font-family:'Syne',sans-serif; font-size:clamp(1.7rem, 6vw, 2.4rem); font-weight:800;
+      letter-spacing:-0.02em;
+      background: linear-gradient(
+        90deg,
+        #ffffff 0%,
+        #ffffff 15%,
+        #cc44ff 28%,
+        #8800cc 38%,
+        #ff44ee 48%,
+        #8800cc 58%,
+        #cc44ff 68%,
+        #ffffff 80%,
+        #ffffff 100%
+      );
+      background-size: 250% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: gradientTravel 2.2s linear infinite;
+    }
+    @keyframes gradientTravel {
+      0%   { background-position: 100% 0; }
+      100% { background-position: -50% 0; }
+    }
+    .team-heading .sub {
+      font-size: 0.8rem;
+      gap: 0.4rem;
+      margin-top: 0.3rem;
+      color: var(--muted);
+      border-bottom: 1px dashed rgba(128,0,96,.5);
+      padding-bottom: 0.3rem;
+    }
+    .team-heading .sub::before,.team-heading .sub::after { width: 20px; background: var(--acc); }
+
+    /* ===== CIRCULOS Y FOTOS: en desktop siguen en fila, mobile en columna (uno arriba del otro) ===== */
+    .team-circles { 
+      display: flex; 
+      flex-wrap: wrap; 
+      justify-content: center; 
+      gap: 2rem; 
+      margin-bottom: 2rem; 
+    }
+    .member-card { 
+      flex: 0 0 auto; 
+      width: 200px;          /* tamaño base desktop */
+      max-width: 200px;
+      text-align: center; 
+      transition: all 0.2s;
+    }
+    
+    /* contenedor circular */
+    .circle-frame {
+      width: 160px;
+      height: 160px;
+      margin: 0 auto 0.8rem;
+      position: relative;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(.2,.8,.4,1);
+    }
+    .circle-frame:hover { transform: translateY(-5px) scale(1.03); }
+    
+    .circle-border {
+      position: absolute;
+      inset: -2px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(128,0,96,0.5);
+      transition: border-color 0.3s;
+    }
+    .circle-frame:hover .circle-border { border-color: rgba(200,80,180,0.9); }
+    
+    .circle-orbit, .circle-orbit2 {
+      position: absolute;
+      inset: -5px;
+      border-radius: 50%;
+      animation: orbitSpin 4s linear infinite;
+    }
+    .circle-orbit::before {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #e080ff, #a020c0);
+      top: 50%;
+      left: -3px;
+      transform: translateY(-50%);
+      box-shadow: 0 0 8px rgba(200,80,255,0.8);
+    }
+    .circle-orbit2 {
+      animation-delay: -2s;
+    }
+    .circle-orbit2::before {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ffffff, #cc60ee);
+      top: 50%;
+      left: -1px;
+      transform: translateY(-50%);
+      box-shadow: 0 0 5px rgba(255,255,255,0.7);
+    }
+    @keyframes orbitSpin { to { transform: rotate(360deg); } }
+    
+    .circle-glow {
+      position: absolute;
+      inset: -18px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(160,32,120,0.2) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+      z-index: -1;
+    }
+    .circle-frame:hover .circle-glow { opacity: 1; }
+    
+    .circle-frame::after {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      border-radius: 50%;
+      background: var(--bg);
+      z-index: 0;
+    }
+    
+    /* FOTO - SIN DESAJUSTES */
+    .photo-placeholder {
+      position: absolute;
+      inset: 4px;
+      border-radius: 50%;
+      overflow: hidden;
+      z-index: 1;
+      background: #0a111c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .photo-placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;    /* imagen completa sin recortes */
+      background: radial-gradient(circle at 30% 40%, #111c2a, #03070e);
+      transition: transform 0.25s ease, filter 0.25s;
+      display: block;
+    }
+    .circle-frame:hover .photo-placeholder img { transform: scale(1.04); filter: brightness(1.06); }
+    .photo-placeholder::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .no-photo-icon {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.6rem;
+      background: radial-gradient(circle at 40% 35%, #111f2e, #050a10);
+      border-radius: 50%;
+    }
+    
+    /* NOMBRES BLANCO */
+    .member-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #ffffff;
+      background: none;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+      line-height: 1.2;
+      letter-spacing: -0.3px;
+    }
+    .member-role {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.8px;
+      color: var(--acc2);
+      background: rgba(128,0,96,0.2);
+      padding: 0.25rem 0.8rem;
+      border-radius: 40px;
+      margin-top: 0.35rem;
+      display: inline-block;
+      border: 0.5px solid rgba(128,0,96,0.5);
+    }
+    .member-sub {
+      margin-top: 0.35rem;
+      font-size: 0.7rem;
+      color: var(--muted);
+      opacity: 0.85;
+    }
+    
+    /* CARRUSEL - MÁS ESPACIOSO */
+    .skills-carousel {
+      background: rgba(13,31,51,0.7);
+      border-radius: 1.6rem;
+      padding: 1rem 0 0.8rem;
+      border: 1px solid rgba(128,0,96,0.55);
+      backdrop-filter: blur(2px);
+      margin-top: 0.6rem;
+      overflow: visible;
+    }
+    .carousel-title {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0 1.2rem;
+      margin-bottom: 0.8rem;
+    }
+    .ct-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(128,0,96,0.7), rgba(160,32,120,0.5)); }
+    .ct-line:last-child { background: linear-gradient(90deg, rgba(160,32,120,0.5), rgba(128,0,96,0.7), transparent); }
+    .ct-content { display: flex; align-items: center; gap: 0.7rem; white-space: nowrap; }
+    .ct-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      background: linear-gradient(120deg, #fff 40%, var(--acc2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .ct-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--acc2);
+      box-shadow: 0 0 7px var(--acc2);
+      animation: pulse-dot 1.8s infinite;
+    }
+    @keyframes pulse-dot { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.6; } }
+    .ct-sub { font-size: 0.65rem; font-weight: 400; letter-spacing: 1.2px; color: var(--muted); text-transform: uppercase; }
+    
+    .infinite-carousel {
+      position: relative;
+      overflow-x: visible;
+      mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+    }
+    .carousel-track {
+      display: flex;
+      gap: 1rem;
+      width: max-content;
+      animation: scroll 28s linear infinite;
+      padding: 0.3rem 0;
+    }
+    .infinite-carousel:hover .carousel-track { animation-play-state: paused; }
+    @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    
+    .skill-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.5rem 0.9rem;
+      min-width: 80px;
+      transition: transform 0.2s;
+      cursor: default;
+    }
+    .skill-item:hover { transform: translateY(-4px); }
+    .skill-item::after {
+      content: '';
+      position: absolute;
+      bottom: 0px;
+      left: 50%;
+      width: 0;
+      height: 1.5px;
+      background: linear-gradient(90deg, transparent, var(--acc2), transparent);
+      transform: translateX(-50%);
+      transition: width 0.25s;
+    }
+    .skill-item:hover::after { width: 65%; }
+    .skill-logo {
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .skill-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
+    }
+    .skill-name {
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      background: linear-gradient(135deg, var(--acc2), #ff80d0);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      white-space: nowrap;
+    }
+    .carousel-hint {
+      text-align: center;
+      font-size: 0.6rem;
+      margin-top: 0.6rem;
+      opacity: 0.55;
+      color: var(--muted);
+    }
+    
+    /* ===== RESPONSIVE: MÓVIL (uno arriba del otro, mayor altura) ===== */
+    @media (max-width: 680px) {
+      body { padding: 0.4rem; }
+      .team-section { padding: 1.6rem 1rem 1.8rem; }
+      /* CAMBIO CLAVE: en mobile los miembros se apilan en columna (uno debajo del otro) */
+      .team-circles {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+      }
+      .member-card {
+        width: 220px;
+        max-width: 220px;
+      }
+      .circle-frame {
+        width: 150px;
+        height: 150px;
+      }
+      .member-name { font-size: 1.2rem; }
+      .member-role { font-size: 0.7rem; }
+      .member-sub { font-size: 0.65rem; }
+      .skills-carousel { padding: 0.8rem 0 0.7rem; }
+      .skill-item { min-width: 72px; }
+      .skill-logo { width: 32px; height: 32px; }
+      .skill-name { font-size: 0.55rem; }
+      .carousel-title { margin-bottom: 0.6rem; }
+    }
+    
+    @media (max-width: 480px) {
+      .member-card { width: 200px; }
+      .circle-frame { width: 140px; height: 140px; }
+      .member-name { font-size: 1.1rem; }
+      .team-heading h2 { font-size: 1.5rem; }
+      .skill-item { min-width: 66px; padding: 0.4rem 0.6rem; }
+      .skill-logo { width: 28px; height: 28px; }
+    }
+    
+    /* desktop: mantener fila horizontal sin cambios */
+    @media (min-width: 681px) {
+      .team-circles {
+        flex-direction: row;
+        gap: 2.5rem;
+      }
+      .member-card {
+        width: 210px;
+      }
+      .circle-frame {
+        width: 170px;
+        height: 170px;
+      }
+    }
+    
+    /* Extra: aseguramos fotos siempre proporcionadas */
+    .photo-placeholder img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+    }
+    .circle-frame, .photo-placeholder, .circle-border, .circle-orbit, .circle-orbit2 {
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+<div class="team-section">
+
+  <div class="team-heading">
+    <h2>Núcleo Creativo</h2>
+    <div class="sub">Talento &amp; especialización · experiencias digitales</div>
+  </div>
+
+  <div class="team-circles">
+    <div class="member-card">
+      <div class="circle-frame">
+        <div class="circle-glow"></div>
+        <div class="circle-border"></div>
+        <div class="circle-orbit"></div>
+        <div class="circle-orbit2"></div>
+        <div class="photo-placeholder">
+          <img src="img/pai.png" alt="Adrián González"
+               onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\'no-photo-icon\'>👨‍💻</div>'">
+        </div>
+      </div>
+      <div class="member-name">Adrián<br>González</div>
+      <div class="member-role">Programador Web Senior</div>
+      <div class="member-sub">full-stack · performance</div>
+    </div>
+
+    <div class="member-card">
+      <div class="circle-frame">
+        <div class="circle-glow"></div>
+        <div class="circle-border"></div>
+        <div class="circle-orbit"></div>
+        <div class="circle-orbit2"></div>
+        <div class="photo-placeholder">
+          <img src="img/Capa.png" alt="José Rincón"
+               onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\'no-photo-icon\'>🎨✏️</div>'">
+        </div>
+      </div>
+      <div class="member-name">José<br>Rincón</div>
+      <div class="member-role">Diseñador Gráfico Senior</div>
+      <div class="member-sub">branding · UI/UX · dirección</div>
+    </div>
+  </div>
+
+  <div class="skills-carousel">
+    <div class="carousel-title">
+      <div class="ct-line"></div>
+      <div class="ct-content">
+        <span class="ct-label">Stack Tecnológico</span>
+        <span class="ct-dot"></span>
+        <span class="ct-sub">Herramientas</span>
+      </div>
+      <div class="ct-line"></div>
+    </div>
+    <div class="infinite-carousel">
+      <div class="carousel-track" id="track"></div>
+    </div>
+    <div class="carousel-hint">↝ pasa el cursor para pausar | scroll infinito ↜</div>
+  </div>
+
+</div>
+<script>
+(function(){
+  const skillsData = [
+    {name:'Photoshop',logo:'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/photoshop/photoshop-plain.svg'},
+    {name:'HTML5',logo:'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg'},
+    {name:'CSS3',logo:'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg'},
+    {name:'JavaScript',logo:'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg'},
+    {name:'Blender',logo:'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/blender/blender-original.svg'},
+    {name:'React',logo:'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg'},
+    {name:'Python',logo:'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg'},
+    {name:'After Effects',logo:'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/aftereffects/aftereffects-original.svg'},
+    {name:'Illustrator',logo:'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/illustrator/illustrator-plain.svg'},
+    {name:'Node.js',logo:'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg'},
+    {name:'Shopify',logo:'https://cdn.simpleicons.org/shopify/96bf48'},
+    {name:'Figma',logo:'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg'},
+    {name:'WordPress',logo:'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/wordpress/wordpress-plain.svg'},
+    {name:'Framer',logo:'https://cdn.simpleicons.org/framer/ffffff'},
+    {name:'MySQL',logo:'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg'},
+    {name:'Tailwind',logo:'https://cdn.simpleicons.org/tailwindcss/38bdf8'},
+    {name:'Git',logo:'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg'}
+  ];
+  
+  const unique = [];
+  const seen = new Set();
+  for (const s of skillsData) {
+    if (!seen.has(s.name)) {
+      seen.add(s.name);
+      unique.push(s);
+    }
+  }
+  
+  const doubled = [...unique, ...unique];
+  
+  const fallbackIcons = {
+    'Photoshop':'🎨','HTML5':'🌐','CSS3':'🎭','JavaScript':'⚡','Blender':'🧊','React':'⚛️',
+    'Python':'🐍','After Effects':'🎬','Illustrator':'📐','Node.js':'🗄️','Shopify':'🛍️','Figma':'💎',
+    'WordPress':'🌀','Framer':'🔷','MySQL':'🗄️','Tailwind':'🎯','Git':'🌀'
+  };
+  
+  function buildSkillItem(skill) {
+    const div = document.createElement('div');
+    div.className = 'skill-item';
+    const fallback = fallbackIcons[skill.name] || '🔧';
+    div.innerHTML = `
+      <div class="skill-logo">
+        <img src="${skill.logo}" alt="${skill.name}" 
+             onerror="this.onerror=null; this.outerHTML='<span style=\\'font-size:1.6rem; line-height:1; display:block\\'>${fallback}</span>'">
+      </div>
+      <div class="skill-name">${skill.name}</div>
+    `;
+    return div;
+  }
+  
+  const track = document.getElementById('track');
+  if (track) {
+    track.innerHTML = '';
+    doubled.forEach(skill => {
+      track.appendChild(buildSkillItem(skill));
+    });
+  }
+})();
+</script>
+</body>
+</html>

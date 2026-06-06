@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>me cogieron porculox - Design & Digital | Estudio Creativo</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        /* RESET Y PREVENCIÓN DE SCROLL INICIAL */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: auto !important;
+            overflow-x: hidden;
+        }
+        
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000000;
+            color: #fff;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* ============================================ */
+        /* FONDO CON FIGURAS DIFUMINADAS - OPTIMIZADO   */
+        /* ============================================ */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            background: #0a0a0a;
+        }
+
+        /* Degradado de fondo principal */
+        .animated-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at 30% 40%, rgba(128, 0, 96, 0.15), rgba(0, 0, 0, 0.95));
+            z-index: 1;
+        }
+
+        /* Figuras difuminadas en movimiento */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.4;
+            animation: floatBlob 20s ease-in-out infinite;
+        }
+
+        .blob-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #800060, #4d0039);
+            top: 10%;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #a0237a, #5c0045);
+            bottom: -150px;
+            right: -100px;
+            animation-delay: 5s;
+            opacity: 0.3;
+        }
+
+        .blob-3 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #6b0050, #2d0020);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: 10s;
+            opacity: 0.25;
+        }
+
+        .blob-4 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, #9a1f72, #3a0028);
+            top: 60%;
+            left: 20%;
+            animation-delay: 15s;
+            opacity: 0.2;
+        }
+
+        .blob-5 {
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle, #800060, #4d0039);
+            top: 15%;
+            right: 10%;
+            animation-delay: 8s;
+            opacity: 0.25;
+        }
+
+        @keyframes floatBlob {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(50px, -50px) scale(1.1);
+            }
+            66% {
+                transform: translate(-30px, 40px) scale(0.95);
+            }
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(12px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(128, 0, 96, 0.35);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #800060, #4d0039);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-text span:first-child {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .logo-text span:last-child {
+            font-size: 10px;
+            color: #800060;
+            letter-spacing: 2px;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 50px 50px;
+            position: relative;
+            background: transparent;
+        }
+
+        .hero-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            gap: 50px;
+            position: relative;
+            z-index: 15;
+        }
+
+        .hero-text {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .hero-text h1 {
+            font-size: 64px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            font-weight: 800;
+            color: white;
+        }
+
+        .hero-text h1 .highlight {
+            color: #800060;
+            text-shadow: 0 0 12px rgba(128, 0, 96, 0.5);
+        }
+
+        .hero-text p {
+            font-size: 16px;
+            color: #b5b9c4;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            max-width: 500px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #800060, #4d0039);
+            color: #fff;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: transform 0.3s, box-shadow 0.3s;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 4px 15px rgba(128, 0, 96, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(128, 0, 96, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(128, 0, 96, 0.15);
+            backdrop-filter: blur(8px);
+            color: #fff;
+            padding: 12px 25px;
+            border: 1px solid rgba(128, 0, 96, 0.6);
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(128, 0, 96, 0.35);
+            transform: translateY(-2px);
+            border-color: #800060;
+            box-shadow: 0 4px 12px rgba(128, 0, 96, 0.3);
+        }
+
+        /* BADGE CON PUNTO VERDE PARPADEANTE */
+        .availability-badge {
+            position: fixed;
+            bottom: 30px;
+            right: 90px;
+            z-index: 25;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 10px 22px;
+            border-radius: 60px;
+            border-left: 3px solid #800060;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 0 22px rgba(128, 0, 96, 0.35);
+            pointer-events: none;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #22c55e;
+            border-radius: 50%;
+            position: relative;
+            display: inline-block;
+            box-shadow: 0 0 8px rgba(34, 197, 94, 0.8), 0 0 16px rgba(34, 197, 94, 0.4);
+            animation: pulseGreen 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseGreen {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+                box-shadow: 0 0 8px rgba(34, 197, 94, 0.8), 0 0 16px rgba(34, 197, 94, 0.4);
+            }
+            50% {
+                opacity: 0.7;
+                transform: scale(0.9);
+                box-shadow: 0 0 4px rgba(34, 197, 94, 0.5), 0 0 8px rgba(34, 197, 94, 0.2);
+            }
+        }
+
+        .status-dot::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulseRing 2s ease-out infinite;
+            opacity: 0;
+        }
+
+        @keyframes pulseRing {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.6;
+            }
+            70% {
+                transform: translate(-50%, -50%) scale(2.5);
+                opacity: 0;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(3);
+                opacity: 0;
+            }
+        }
+
+        .availability-badge .badge-text {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+        }
+
+        /* ============================================ */
+        /* ESTILOS DEL GIF - SIN BORDES, TRANSPARENTE, MÁS GRANDE */
+        /* ============================================ */
+        .gif-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            position: relative;
+            right: 75px;
+        }
+        
+        /* Contenedor completamente transparente, sin fondo, sin border-radius */
+        .gif-container {
+            width: 860px;      /* Más grande que antes */
+            height: 520px;     /* Tamaño incrementado significativamente */
+            position: relative;
+            transform: translateY(-15px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: transparent;   /* Fondo completamente transparente */
+            border-radius: 0px;       /* Sin border radius */
+            box-shadow: none;         /* Sin sombra en el contenedor */
+            backdrop-filter: none;    /* Sin ningún efecto de vidrio */
+            transition: transform 0.3s ease;
+        }
+        
+        /* Eliminamos cualquier efecto de hover que agregue fondo o bordes */
+        .gif-container:hover {
+            transform: translateY(-15px) scale(1.02);
+            background: transparent;
+            box-shadow: none;
+        }
+        
+        /* El GIF en sí: sin bordes, sin fondo, más grande */
+        .soda-gif {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;   /* Mantiene proporción sin recortes, visible completo */
+            display: block;
+            background: transparent;
+            border-radius: 0px;
+            filter: drop-shadow(0 8px 24px rgba(128, 0, 96, 0.4)); /* sutíl solo para destacar, no es fondo */
+            transition: filter 0.3s ease;
+        }
+        
+        .soda-gif:hover {
+            filter: drop-shadow(0 12px 32px rgba(128, 0, 96, 0.6));
+        }
+
+        /* ========== VERSIÓN MÓVIL ========== */
+        @media (max-width: 1024px) {
+            .hero-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            .hero-text {
+                order: 1;
+                max-width: 100%;
+                margin-bottom: 10px;
+            }
+            .hero-text h1 {
+                font-size: 48px;
+            }
+            .hero-buttons {
+                justify-content: center;
+            }
+            .gif-wrapper {
+                order: 2;
+                justify-content: center;
+                margin-top: 0;
+                width: 100%;
+            }
+            /* Tamaño ajustado para tablet pero más grande que antes */
+            .gif-container {
+                width: 380px;
+                height: 380px;
+                transform: translateY(0);
+                margin: 0 auto;
+            }
+            .gif-container:hover {
+                transform: translateY(0) scale(1.02);
+            }
+            .availability-badge {
+                bottom: 20px;
+                right: 20px;
+                padding: 8px 18px;
+            }
+            .availability-badge .badge-text {
+                font-size: 0.65rem;
+            }
+            .status-dot {
+                width: 9px;
+                height: 9px;
+            }
+            .blob-1, .blob-2, .blob-3, .blob-4, .blob-5 {
+                filter: blur(40px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 12px 20px;
+            }
+            .logo-icon {
+                width: 32px;
+                height: 32px;
+            }
+            .logo-text span:first-child {
+                font-size: 14px;
+            }
+            .logo-text span:last-child {
+                font-size: 8px;
+            }
+            .hero {
+                padding: 90px 20px 40px;
+                min-height: auto;
+                align-items: flex-start;
+            }
+            .hero-text h1 {
+                font-size: 32px;
+                line-height: 1.2;
+            }
+            .hero-text p {
+                font-size: 14px;
+                margin-bottom: 24px;
+            }
+            .hero-buttons {
+                gap: 12px;
+                margin-bottom: 20px;
+            }
+            .btn-primary, .btn-secondary {
+                padding: 10px 20px;
+                font-size: 13px;
+            }
+            .gif-wrapper {
+                margin: 5px auto 15px auto;
+                overflow: visible;
+                display: flex;
+                justify-content: center;
+                width: 100%;
+            }
+            /* Más grande en móvil también: 320px */
+            .gif-container {
+                width: 320px;
+                height: 320px;
+                transform: translateY(0);
+                margin: 0 auto;
+            }
+            .availability-badge {
+                bottom: 12px;
+                right: 12px;
+                padding: 5px 12px;
+                gap: 8px;
+            }
+            .availability-badge .badge-text {
+                font-size: 0.55rem;
+                letter-spacing: 1px;
+            }
+            .status-dot {
+                width: 8px;
+                height: 8px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero {
+                padding: 80px 16px 30px;
+            }
+            .hero-text h1 {
+                font-size: 28px;
+            }
+            .hero-text p {
+                font-size: 13px;
+            }
+            /* En móviles pequeños aún grande pero proporcionado */
+            .gif-container {
+                width: 280px;
+                height: 280px;
+            }
+            .btn-primary, .btn-secondary {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+            .availability-badge {
+                bottom: 10px;
+                right: 10px;
+                padding: 4px 10px;
+            }
+            .status-dot {
+                width: 7px;
+                height: 7px;
+            }
+        }
+        
+        /* Landscape mode en móviles: ajuste de tamaño manteniendo la proporción grande */
+        @media (max-width: 850px) and (orientation: landscape) {
+            .hero {
+                padding: 80px 20px 20px;
+                min-height: auto;
+            }
+            .hero-content {
+                gap: 15px;
+            }
+            .gif-container {
+                width: 260px;
+                height: 260px;
+            }
+            .hero-text h1 {
+                font-size: 28px;
+            }
+            .hero-text p {
+                font-size: 12px;
+                margin-bottom: 12px;
+            }
+            .hero-buttons {
+                margin-bottom: 10px;
+            }
+            .status-dot {
+                width: 7px;
+                height: 7px;
+            }
+        }
+        
+        /* Para pantallas muy grandes, que el gif pueda sentirse todavía con presencia */
+        @media (min-width: 1600px) {
+            .gif-container {
+                width: 560px;
+                height: 560px;
+                transform: translateY(-20px);
+            }
+            .hero-text h1 {
+                font-size: 74px;
+            }
+        }
+        
+        body {
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+<body>
+    <!-- ============================================= -->
+    <!-- FORZAR SCROLL AL TOP                          -->
+    <!-- ============================================= -->
+    <script>
+        (function() {
+            if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'manual';
+            }
+            const forceTop = () => {
+                if (window.scrollY !== 0) window.scrollTo({ top: 0, behavior: 'instant' });
+                if (document.documentElement.scrollTop !== 0) document.documentElement.scrollTop = 0;
+                if (document.body.scrollTop !== 0) document.body.scrollTop = 0;
+            };
+            forceTop();
+            setTimeout(forceTop, 0);
+            setTimeout(forceTop, 10);
+            setTimeout(forceTop, 50);
+            setTimeout(forceTop, 100);
+            setTimeout(forceTop, 200);
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', forceTop);
+            else forceTop();
+            window.addEventListener('load', forceTop);
+            const observer = new MutationObserver(() => forceTop());
+            observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class'] });
+            setTimeout(() => observer.disconnect(), 1500);
+            if (window.location.hash && window.location.hash !== '#') history.replaceState(null, '', window.location.pathname + window.location.search);
+        })();
+    </script>
+
+    <!-- FONDO CON FIGURAS DIFUMINADAS -->
+    <div class="animated-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="blob blob-4"></div>
+        <div class="blob blob-5"></div>
+    </div>
+
+    <nav>
+        <div class="logo">
+            <div class="logo-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+            </div>
+            <div class="logo-text">
+                <span>me cogieron porculox</span>
+                <span>DESIGN & DIGITAL</span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>
+                    <span>Transformamos</span>
+                    <span class="highlight">Ideas</span>
+                    <span>en Experiencias</span>
+                    <span>Digitales</span>
+                </h1>
+                <p>
+                    Somos un estudio de diseño y marketing digital especializado en crear 
+                    identidades de marca impactantes, sitios web innovadores y estrategias 
+                    digitales que generan resultados reales.
+                </p>
+                <div class="hero-buttons">
+                    <button class="btn-primary">
+                        <i class="fas fa-palette"></i> Ver Diseño
+                    </button>
+                    <button class="btn-secondary">
+                        <i class="fas fa-globe"></i> Explorar Webs
+                    </button>
+                </div>
+            </div>
+            
+            <!-- GIF "soda.gif" - SIN BORDES, SIN FONDO, MÁS GRANDE -->
+            <div class="gif-wrapper">
+                <div class="gif-container">
+                    <img class="soda-gif" src="eco.gif" alt="soda animación creativa" 
+                         onerror="this.onerror=null; this.src='https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzZkZjQxMDVlYzU5YzA4ZGY3YmI4MzU0M2M3MDI5Y2I4YzU5YzY4ZCZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/xT9IgGgFb7O6qR5q0/giphy.gif';">
+                </div>
+            </div>
+        </div>
+
+        <!-- BADGE CON PUNTO VERDE PARPADEANTE -->
+        <div class="availability-badge">
+            <span class="status-dot" aria-label="Estado: Conectado"></span>
+            <span class="badge-text">DISPONIBLE PARA NUEVOS PROYECTOS</span>
+        </div>
+    </section>
+
+    <script>
+        (function() {
+            // Asegurar que el contenedor del GIF sea completamente transparente y sin redondeos
+            const gifContainer = document.querySelector('.gif-container');
+            const gifImage = document.querySelector('.soda-gif');
+            
+            if (gifContainer) {
+                // Forzar estilos inline por si algún user-agent los modifica
+                gifContainer.style.background = 'transparent';
+                gifContainer.style.backgroundColor = 'transparent';
+                gifContainer.style.borderRadius = '0px';
+                gifContainer.style.backdropFilter = 'none';
+                gifContainer.style.boxShadow = 'none';
+            }
+            
+            if (gifImage) {
+                gifImage.style.background = 'transparent';
+                gifImage.style.borderRadius = '0px';
+                // Añadir un pequeño efecto suave opcional pero manteniendo transparencia
+                gifImage.style.objectFit = 'contain';
+            }
+            
+            // Pequeña verificación extra para garantizar que el gif se muestre grande
+            const adjustGifSize = () => {
+                if (window.innerWidth <= 768) {
+                    // ya responsive, pero aseguramos que no haya border-radius inesperado
+                    if (gifContainer) gifContainer.style.borderRadius = '0px';
+                }
+            };
+            adjustGifSize();
+            window.addEventListener('resize', adjustGifSize);
+        })();
+    </script>
+</body>
+</html>

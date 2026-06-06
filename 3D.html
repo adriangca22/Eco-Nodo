@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Render Fotorealista | Carrusel Soda & Laptop</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #07000d;
+      overflow: hidden;
+    }
+
+    .hero {
+      width: 100%;
+      height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 9%;
+      overflow: hidden;
+      background: radial-gradient(circle at center,
+          rgba(183, 0, 255, 0.35) 0%,
+          rgba(90, 0, 120, 0.25) 30%,
+          rgba(10, 0, 20, 1) 75%);
+    }
+
+    /* Grid futurista */
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(255, 0, 255, .08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 0, 255, .08) 1px, transparent 1px);
+      background-size: 32px 32px;
+      mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
+      opacity: 0.55;
+      pointer-events: none;
+    }
+
+    /* CARD principal */
+    .card {
+      position: relative;
+      z-index: 10;
+      width: 320px;
+      padding: 20px 28px;
+      border-radius: 28px;
+      background: #090814;
+      border: 1px solid rgba(255, 0, 255, .2);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(255, 255, 255, .02) inset,
+        0 0 30px rgba(255, 0, 255, .15);
+      text-align: center;
+      backdrop-filter: blur(2px);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 0, 255, 0.5);
+      box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.05) inset, 0 0 40px rgba(255, 0, 255, 0.3);
+    }
+
+    .icon-wrap {
+      width: 65px;
+      height: 65px;
+      margin: 0 auto 14px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #ff00ff33;
+      box-shadow: 0 0 15px rgba(255, 0, 255, .2);
+      background: #120b24;
+    }
+
+    .cube {
+      width: 30px;
+      height: 30px;
+      border: 4px solid #fff;
+      border-radius: 8px;
+      transform: rotate(45deg);
+      position: relative;
+    }
+
+    .cube::after {
+      content: "";
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: #fff;
+      right: -5px;
+      top: 6px;
+    }
+
+    .card h1 {
+      color: #fff;
+      font-size: 1.65rem;
+      line-height: 1.1;
+      margin-bottom: 8px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #fff, #e0aaff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .card p {
+      color: #e3e3e3;
+      font-size: .8rem;
+      line-height: 1.35;
+      font-weight: 300;
+      margin-bottom: 14px;
+    }
+
+    .blender {
+      width: 55px;
+      margin-bottom: 14px;
+      filter: drop-shadow(0 0 10px rgba(255, 170, 0, .4));
+      transition: filter 0.3s;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 155px;
+      height: 46px;
+      border-radius: 40px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 600;
+      letter-spacing: .5px;
+      border: 2px solid rgba(255, 0, 255, .25);
+      background: linear-gradient(180deg, rgba(255, 0, 255, .08), rgba(255, 0, 255, .02));
+      box-shadow: inset 0 0 10px rgba(255, 0, 255, .1), 0 0 15px rgba(255, 0, 255, .08);
+      transition: .3s ease;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(255, 0, 255, .35);
+      background: linear-gradient(180deg, rgba(255, 0, 255, 0.15), rgba(255, 0, 255, 0.05));
+      border-color: rgba(255, 0, 255, 0.5);
+    }
+
+    /* ÁREA DEL CARRUSEL - IMAGEN PRINCIPAL + SOMBRA */
+    .soda-area {
+      position: relative;
+      z-index: 2;
+      width: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 120px;
+      perspective: 1200px;
+    }
+
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .carousel-track {
+      position: relative;
+      width: 500px;
+      height: 500px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .carousel-item {
+      position: absolute;
+      width: 100%;
+      opacity: 0;
+      transform: scale(0.85) rotate(-18deg) translateY(30px);
+      transition: opacity 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.8s cubic-bezier(0.2, 0.85, 0.3, 1);
+      filter: drop-shadow(0 40px 30px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 20px rgba(255, 0, 255, 0.15));
+      pointer-events: none;
+    }
+
+    .carousel-item.active {
+      opacity: 1;
+      transform: scale(1) rotate(-18deg) translateY(0px);
+      z-index: 20;
+    }
+
+    .soda-img,
+    .laptop-img {
+      width: 100%;
+      max-width: 500px;
+      display: block;
+      margin: 0 auto;
+      animation: floatItem 4s ease-in-out infinite;
+    }
+
+    @keyframes floatItem {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-12px);
+      }
+    }
+
+    .carousel-item.active .soda-img,
+    .carousel-item.active .laptop-img {
+      animation: floatItem 4s ease-in-out infinite;
+    }
+
+    /* Sombra realista debajo de la imagen activa */
+    .dynamic-shadow {
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 380px;
+      height: 35px;
+      background: radial-gradient(ellipse, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.5) 55%, transparent 80%);
+      filter: blur(12px);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 5;
+      transition: opacity 0.5s ease, width 0.4s;
+      opacity: 0.9;
+    }
+
+    /* Indicadores / paginación del carrusel */
+    .carousel-indicators {
+      position: absolute;
+      bottom: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 16px;
+      z-index: 25;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px);
+      padding: 8px 20px;
+      border-radius: 60px;
+      border: 1px solid rgba(255, 0, 255, 0.3);
+    }
+
+    .indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 4px rgba(255, 0, 255, 0.3);
+    }
+
+    .indicator.active {
+      background: #ff44ff;
+      width: 24px;
+      border-radius: 8px;
+      box-shadow: 0 0 12px #ff44ff;
+    }
+
+    .indicator:hover {
+      background: #ff88ff;
+      transform: scale(1.2);
+    }
+
+    /* Instagram */
+    .insta {
+      position: absolute;
+      bottom: 30px;
+      right: 40px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 18px;
+      border-radius: 18px;
+      background: #140b20;
+      border: 1px solid rgba(255, 255, 255, .08);
+      color: #fff;
+      text-decoration: none;
+      font-size: .9rem;
+      z-index: 30;
+      backdrop-filter: blur(4px);
+      transition: 0.2s;
+    }
+
+    .insta:hover {
+      border-color: #ff44ff;
+      background: #1f1230;
+      transform: scale(1.02);
+    }
+
+    .insta-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      border: 2px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    /* Responsive */
+    @media(max-width: 1000px) {
+      .hero {
+        flex-direction: column;
+        justify-content: center;
+        gap: 40px;
+        padding: 40px 20px;
+      }
+
+      .soda-area {
+        width: 100%;
+        justify-content: center;
+        margin-right: 0;
+      }
+
+      .carousel-track {
+        width: 320px;
+        height: 320px;
+      }
+
+      .soda-img,
+      .laptop-img {
+        max-width: 320px;
+      }
+
+      .dynamic-shadow {
+        width: 240px;
+        height: 25px;
+        bottom: -20px;
+      }
+
+      .insta {
+        right: 20px;
+        bottom: 20px;
+        transform: scale(.9);
+      }
+
+      .carousel-indicators {
+        bottom: -45px;
+      }
+    }
+
+    @media(max-width: 480px) {
+      .card {
+        width: 90%;
+        padding: 18px 20px;
+      }
+
+      .card h1 {
+        font-size: 1.4rem;
+      }
+
+      .carousel-track {
+        width: 260px;
+        height: 260px;
+      }
+
+      .soda-img,
+      .laptop-img {
+        max-width: 260px;
+      }
+
+      .dynamic-shadow {
+        width: 200px;
+        height: 20px;
+        bottom: -15px;
+      }
+    }
+
+    .glow-effect {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 40%, rgba(255, 0, 255, 0.1), transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+    }
+  </style>
+</head>
+
+<body>
+
+  <section class="hero">
+    <div class="glow-effect"></div>
+
+    <!-- CARD LADO IZQUIERDO -->
+    <div class="card">
+      <div class="icon-wrap">
+        <div class="cube"></div>
+      </div>
+      <h1>Render Fotorealista</h1>
+      <p>
+        Visualización en alta fidelidad para exhibir productos,
+        packaging y previsualización de proyectos, estrategia
+        de branding con imágenes comerciales.
+      </p>
+      <img class="blender" src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Blender_logo_no_text.svg" alt="Blender">
+      <br>
+      <a href="#" class="btn">COTIZAR</a>
+    </div>
+
+    <!-- ÁREA CARRUSEL: SODA.GIF y LAPTOP.GIF con animación fluida -->
+    <div class="soda-area">
+      <div class="carousel-container">
+        <div class="carousel-track">
+          <!-- Primer elemento: SODA GIF -->
+          <div class="carousel-item" id="item-soda">
+            <img class="soda-img" src="soda.gif" alt="Soda GIF" style="width:100%; object-fit:contain;">
+          </div>
+          <!-- Segundo elemento: LAPTOP GIF -->
+          <div class="carousel-item" id="item-laptop">
+            <img class="laptop-img" src="laptop.gif" alt="Laptop GIF" style="width:100%; object-fit:contain;">
+          </div>
+        </div>
+        <!-- Sombra dinámica debajo del producto actual -->
+        <div class="dynamic-shadow" id="dynamicShadow"></div>
+      </div>
+
+      <!-- Indicadores / bullets -->
+      <div class="carousel-indicators">
+        <div class="indicator" data-index="0" id="indicator-soda"></div>
+        <div class="indicator" data-index="1" id="indicator-laptop"></div>
+      </div>
+    </div>
+
+    <!-- Instagram -->
+    <a href="#" class="insta">
+      <div class="insta-icon">✨</div>
+      <span>@renderlab.studio</span>
+    </a>
+  </section>
+
+  <script>
+    (function() {
+      // Elementos del carrusel
+      const sodaItem = document.getElementById('item-soda');
+      const laptopItem = document.getElementById('item-laptop');
+      const indicatorSoda = document.getElementById('indicator-soda');
+      const indicatorLaptop = document.getElementById('indicator-laptop');
+      const shadowDiv = document.getElementById('dynamicShadow');
+
+      let currentIndex = 0;        // 0: soda, 1: laptop
+      let intervalId = null;
+      let isTransitioning = false;   // Prevenir múltiples cambios rápidos
+
+      // Función para actualizar la clase activa + estilos de sombra adaptativa + efectos
+      function setActiveItem(index, smooth = true) {
+        if (isTransitioning) return;
+        if (index === currentIndex && !smooth) return;
+        
+        isTransitioning = true;
+        
+        // Remover clase active de ambos
+        sodaItem.classList.remove('active');
+        laptopItem.classList.remove('active');
+        
+        // Añadir clase active según índice
+        if (index === 0) {
+          sodaItem.classList.add('active');
+          // Ajustar sombra para la soda (más ancha, redondeada)
+          if (shadowDiv) {
+            const width = window.innerWidth <= 1000 ? '240px' : '380px';
+            shadowDiv.style.width = width;
+            shadowDiv.style.opacity = '0.95';
+            shadowDiv.style.background = 'radial-gradient(ellipse, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.55) 60%, transparent 85%)';
+          }
+          // Actualizar indicadores
+          indicatorSoda.classList.add('active');
+          indicatorLaptop.classList.remove('active');
+        } else {
+          laptopItem.classList.add('active');
+          if (shadowDiv) {
+            const width = window.innerWidth <= 1000 ? '260px' : '390px';
+            shadowDiv.style.width = width;
+            shadowDiv.style.opacity = '0.9';
+            shadowDiv.style.background = 'radial-gradient(ellipse, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 65%, transparent 85%)';
+          }
+          indicatorSoda.classList.remove('active');
+          indicatorLaptop.classList.add('active');
+        }
+        
+        currentIndex = index;
+        
+        // Pequeña animación de entrada extra: rebote sutil en la sombra
+        if (shadowDiv) {
+          shadowDiv.style.transform = 'translateX(-50%) scale(1.02)';
+          setTimeout(() => {
+            if (shadowDiv) shadowDiv.style.transform = 'translateX(-50%) scale(1)';
+          }, 200);
+        }
+        
+        // Liberar bloqueo de transición después de tiempo de animación CSS
+        setTimeout(() => {
+          isTransitioning = false;
+        }, 750);
+      }
+      
+      // Cambiar al siguiente elemento (carrusel automático)
+      function nextSlide() {
+        if (isTransitioning) return;
+        let nextIndex = currentIndex === 0 ? 1 : 0;
+        setActiveItem(nextIndex, true);
+      }
+      
+      // Función para iniciar el intervalo (cada 5 segundos)
+      function startCarousel() {
+        if (intervalId) clearInterval(intervalId);
+        intervalId = setInterval(() => {
+          nextSlide();
+        }, 5000); // 5 segundos exactos
+      }
+      
+      // Detener intervalo
+      function stopCarousel() {
+        if (intervalId) {
+          clearInterval(intervalId);
+          intervalId = null;
+        }
+      }
+      
+      // Reiniciar carrusel con nuevo timer
+      function resetCarouselTimer() {
+        stopCarousel();
+        startCarousel();
+      }
+      
+      // Eventos manuales para los indicadores (bullet click)
+      indicatorSoda.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (currentIndex !== 0 && !isTransitioning) {
+          setActiveItem(0, true);
+          resetCarouselTimer();
+        }
+      });
+      
+      indicatorLaptop.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (currentIndex !== 1 && !isTransitioning) {
+          setActiveItem(1, true);
+          resetCarouselTimer();
+        }
+      });
+      
+      // Pausa automática durante el hover sobre el área del carrusel (mejor UX)
+      const carouselContainer = document.querySelector('.carousel-container');
+      if (carouselContainer) {
+        carouselContainer.addEventListener('mouseenter', () => {
+          if (intervalId) {
+            clearInterval(intervalId);
+            intervalId = null;
+          }
+        });
+        carouselContainer.addEventListener('mouseleave', () => {
+          if (!intervalId) {
+            startCarousel();
+          }
+        });
+      }
+      
+      // Efecto parallax sutil con mousemove (mejora realismo)
+      const heroSection = document.querySelector('.hero');
+      if (heroSection && shadowDiv) {
+        heroSection.addEventListener('mousemove', (e) => {
+          if (window.innerWidth > 768) {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 45;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 45;
+            shadowDiv.style.transform = `translateX(calc(-50% + ${xAxis * 0.5}px)) translateY(${yAxis * 0.3}px)`;
+          }
+        });
+        heroSection.addEventListener('mouseleave', () => {
+          if (shadowDiv) shadowDiv.style.transform = 'translateX(-50%) scale(1)';
+        });
+      }
+      
+      // Función para manejar el fallo de carga de imágenes GIF (mostrar placeholder visual si es necesario)
+      const sodaImg = document.querySelector('#item-soda img');
+      const laptopImg = document.querySelector('#item-laptop img');
+      
+      if (sodaImg) {
+        sodaImg.onerror = function() {
+          // Si no encuentra soda.gif, mostrar un texto visual o un emoji, pero mantenemos coherencia
+          this.style.objectFit = 'contain';
+          this.style.minHeight = '200px';
+          // No reemplazamos con otra imagen para mantener la integridad visual, solo un efecto
+          this.alt = 'Soda Render';
+        };
+      }
+      
+      if (laptopImg) {
+        laptopImg.onerror = function() {
+          this.style.objectFit = 'contain';
+          this.style.minHeight = '200px';
+          this.alt = 'Laptop Render';
+          // Podemos agregar un pequeño texto flotante? No es necesario, pero aseguramos que no rompa
+        };
+      }
+      
+      // Ajuste de sombra al redimensionar ventana
+      window.addEventListener('resize', () => {
+        if (shadowDiv) {
+          if (window.innerWidth <= 1000) {
+            shadowDiv.style.width = currentIndex === 0 ? '240px' : '260px';
+          } else {
+            shadowDiv.style.width = currentIndex === 0 ? '380px' : '390px';
+          }
+        }
+      });
+      
+      // Inicializar estado: activar SODA primero
+      function init() {
+        // Asegurar clases iniciales: soda activo, laptop inactivo
+        sodaItem.classList.add('active');
+        laptopItem.classList.remove('active');
+        
+        // Aplicar estilos inline consistentes
+        sodaItem.style.opacity = '';
+        laptopItem.style.opacity = '';
+        
+        currentIndex = 0;
+        indicatorSoda.classList.add('active');
+        indicatorLaptop.classList.remove('active');
+        
+        if (shadowDiv) {
+          const initialWidth = window.innerWidth <= 1000 ? '240px' : '380px';
+          shadowDiv.style.width = initialWidth;
+          shadowDiv.style.opacity = '0.95';
+          shadowDiv.style.background = 'radial-gradient(ellipse, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.55) 60%, transparent 85%)';
+        }
+        
+        // Iniciar el carrusel automático
+        startCarousel();
+      }
+      
+      // Ejecutar inicialización completa
+      init();
+      
+      // Limpiar intervalo al cerrar o recargar
+      window.addEventListener('beforeunload', () => {
+        if (intervalId) clearInterval(intervalId);
+      });
+      
+      // Reforzar la correcta asignación de eventos luego de cualquier posible cambio dinámico
+      const finalIndicatorSoda = document.getElementById('indicator-soda');
+      const finalIndicatorLaptop = document.getElementById('indicator-laptop');
+      
+      if (finalIndicatorSoda) {
+        finalIndicatorSoda.onclick = (e) => {
+          e.stopPropagation();
+          if (currentIndex !== 0 && !isTransitioning) {
+            setActiveItem(0, true);
+            stopCarousel();
+            startCarousel();
+          }
+        };
+      }
+      
+      if (finalIndicatorLaptop) {
+        finalIndicatorLaptop.onclick = (e) => {
+          e.stopPropagation();
+          if (currentIndex !== 1 && !isTransitioning) {
+            setActiveItem(1, true);
+            stopCarousel();
+            startCarousel();
+          }
+        };
+      }
+      
+      // Exponer funciones para depuración si se requiere (opcional)
+      window.carouselAPI = {
+        next: nextSlide,
+        setIndex: setActiveItem
+      };
+    })();
+  </script>
+</body>
+</html>
