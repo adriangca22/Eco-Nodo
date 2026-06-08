@@ -383,15 +383,15 @@
             box-shadow: none;
         }
 
-        /* CAPA 1 — ESFERA (fondo): centrada, ligeramente más grande que eco
-           para que asome por detrás y se vea la profundidad              */
+        /* CAPA 1 — ESFERA (fondo): ESQUINA SUPERIOR DERECHA, UN POCO MÁS GRANDE */
         .sphere-gif {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 75%;
-            height: 75%;
+            top: -20px;
+            right: -35px;
+            left: auto;
+            transform: none;
+            width: 50%;
+            height: 50%;
             object-fit: contain;
             z-index: 1;
             background: transparent;
@@ -406,9 +406,9 @@
         }
 
         @keyframes sphereFloat {
-            0%,  100% { transform: translate(-50%, -50%) scale(1)    translateY(0px); }
-            33%        { transform: translate(-50%, -50%) scale(1.03) translateY(-10px); }
-            66%        { transform: translate(-50%, -50%) scale(0.98) translateY(8px); }
+            0%,  100% { transform: scale(1)    translateY(0px); }
+            33%        { transform: scale(1.03) translateY(-10px); }
+            66%        { transform: scale(0.98) translateY(8px); }
         }
 
         /* OVERLAY OSCURO — cubre todo el hero, detrás del texto y del eco */
@@ -483,9 +483,12 @@
             .gif-container:hover {
                 transform: translateY(0) scale(1.02);
             }
+            
+            /* BADGE MOVIDO COMPLETAMENTE A LA IZQUIERDA EN MÓVIL/TABLET */
             .availability-badge {
                 bottom: 20px;
-                right: 20px;
+                left: 16px;
+                right: auto;
                 padding: 8px 18px;
             }
             .availability-badge .badge-text {
@@ -497,6 +500,14 @@
             }
             .blob-1, .blob-2, .blob-3, .blob-4, .blob-5 {
                 filter: blur(40px);
+            }
+            
+            /* Esfera un poco más grande en tablet */
+            .sphere-gif {
+                top: 0px;
+                right: -20px;
+                width: 48%;
+                height: 48%;
             }
         }
 
@@ -549,9 +560,12 @@
                 transform: translateY(0);
                 margin: 0 auto;
             }
+            
+            /* BADGE A LA IZQUIERDA EN MÓVIL PEQUEÑO */
             .availability-badge {
                 bottom: 12px;
-                right: 12px;
+                left: 12px;
+                right: auto;
                 padding: 5px 12px;
                 gap: 8px;
             }
@@ -562,6 +576,14 @@
             .status-dot {
                 width: 8px;
                 height: 8px;
+            }
+            
+            /* Esfera un poco más grande en móvil */
+            .sphere-gif {
+                top: 5px;
+                right: -15px;
+                width: 44%;
+                height: 44%;
             }
         }
         
@@ -583,14 +605,25 @@
                 padding: 8px 16px;
                 font-size: 12px;
             }
+            
+            /* BADGE A LA IZQUIERDA EN PANTALLAS MUY PEQUEÑAS */
             .availability-badge {
                 bottom: 10px;
-                right: 10px;
+                left: 12px;
+                right: auto;
                 padding: 4px 10px;
             }
             .status-dot {
                 width: 7px;
                 height: 7px;
+            }
+            
+            /* Esfera un poco más grande en móvil muy pequeño */
+            .sphere-gif {
+                top: 5px;
+                right: -12px;
+                width: 40%;
+                height: 40%;
             }
         }
         
@@ -620,6 +653,21 @@
                 width: 7px;
                 height: 7px;
             }
+            
+            /* BADGE A LA IZQUIERDA EN HORIZONTAL */
+            .availability-badge {
+                bottom: 10px;
+                left: 12px;
+                right: auto;
+            }
+            
+            /* Esfera un poco más grande en landscape */
+            .sphere-gif {
+                top: 5px;
+                right: -12px;
+                width: 38%;
+                height: 38%;
+            }
         }
         
         @media (min-width: 1600px) {
@@ -630,6 +678,14 @@
             }
             .hero-text h1 {
                 font-size: 74px;
+            }
+            
+            /* Esfera un poco más grande en pantallas muy grandes */
+            .sphere-gif {
+                top: -10px;
+                right: -45px;
+                width: 50%;
+                height: 50%;
             }
         }
         
@@ -720,7 +776,7 @@
             <!-- GIFS APILADOS: esfere.gif detrás, eco.gif delante -->
             <div class="gif-wrapper">
                 <div class="gif-container">
-                    <!-- CAPA TRASERA: esfera con glow y flotación -->
+                    <!-- CAPA TRASERA: esfera con glow y flotación — ESQUINA SUPERIOR -->
                     <img class="sphere-gif" src="esfera.gif" alt="esfera animada fondo">
                     <!-- CAPA FRONTAL: eco encima -->
                     <img class="soda-gif" src="eco.gif" alt="soda animación creativa" 
