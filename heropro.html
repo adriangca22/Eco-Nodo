@@ -350,7 +350,7 @@
         }
 
         /* ============================================ */
-        /* GIF WRAPPER — ESFERA DETRÁS, ECO DELANTE     */
+        /* GIF WRAPPER — ESFERA ABAJO, ECO DELANTE      */
         /* ============================================ */
         .gif-wrapper {
             flex: 1;
@@ -358,7 +358,6 @@
             justify-content: flex-start;
             align-items: center;
             position: relative;
-            right: 75px;
         }
 
         /* Contenedor: position relative para apilar las dos capas */
@@ -366,7 +365,6 @@
             width: 860px;
             height: 520px;
             position: relative;
-            transform: translateY(-15px);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -378,20 +376,21 @@
         }
 
         .gif-container:hover {
-            transform: translateY(-15px) scale(1.02);
+            transform: scale(1.02);
             background: transparent;
             box-shadow: none;
         }
 
-        /* CAPA 1 — ESFERA (fondo): ESQUINA SUPERIOR DERECHA, UN POCO MÁS GRANDE */
+        /* CAPA 1 — ESFERA (fondo): MÁS GRANDE Y MÁS ABAJO */
         .sphere-gif {
             position: absolute;
-            top: -20px;
-            right: -35px;
+            bottom: -40px;
+            right: -180px;
             left: auto;
+            top: auto;
             transform: none;
-            width: 50%;
-            height: 50%;
+            width: 90%;
+            height: 90%;
             object-fit: contain;
             z-index: 1;
             background: transparent;
@@ -423,14 +422,14 @@
             )
         }
 
-        /* CAPA 2 — ECO (frente): ocupa el 100% del contenedor */
+        /* CAPA 2 — ECO (frente): ocupa el centro del contenedor */
         .soda-gif {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 100%;
-            height: 100%;
+            width: 65%;
+            height: 65%;
             object-fit: contain;
             z-index: 2;
             display: block;
@@ -472,16 +471,14 @@
                 justify-content: center;
                 margin-top: 0;
                 width: 100%;
-                right: 0;
             }
             .gif-container {
                 width: 380px;
                 height: 380px;
-                transform: translateY(0);
                 margin: 0 auto;
             }
             .gif-container:hover {
-                transform: translateY(0) scale(1.02);
+                transform: scale(1.02);
             }
             
             /* BADGE MOVIDO COMPLETAMENTE A LA IZQUIERDA EN MÓVIL/TABLET */
@@ -502,12 +499,12 @@
                 filter: blur(40px);
             }
             
-            /* Esfera un poco más grande en tablet */
+            /* Esfera más grande y más abajo en tablet */
             .sphere-gif {
-                top: 0px;
-                right: -20px;
-                width: 48%;
-                height: 48%;
+                bottom: -30px;
+                right: -80px;
+                width: 88%;
+                height: 88%;
             }
         }
 
@@ -552,12 +549,10 @@
                 display: flex;
                 justify-content: center;
                 width: 100%;
-                right: 0;
             }
             .gif-container {
                 width: 320px;
                 height: 320px;
-                transform: translateY(0);
                 margin: 0 auto;
             }
             
@@ -578,12 +573,12 @@
                 height: 8px;
             }
             
-            /* Esfera un poco más grande en móvil */
+            /* Esfera más grande y más abajo en móvil */
             .sphere-gif {
-                top: 5px;
-                right: -15px;
-                width: 44%;
-                height: 44%;
+                bottom: -25px;
+                right: -60px;
+                width: 85%;
+                height: 85%;
             }
         }
         
@@ -618,12 +613,12 @@
                 height: 7px;
             }
             
-            /* Esfera un poco más grande en móvil muy pequeño */
+            /* Esfera más grande y más abajo en móvil muy pequeño */
             .sphere-gif {
-                top: 5px;
-                right: -12px;
-                width: 40%;
-                height: 40%;
+                bottom: -20px;
+                right: -50px;
+                width: 82%;
+                height: 82%;
             }
         }
         
@@ -661,12 +656,12 @@
                 right: auto;
             }
             
-            /* Esfera un poco más grande en landscape */
+            /* Esfera más grande y más abajo en landscape */
             .sphere-gif {
-                top: 5px;
-                right: -12px;
-                width: 38%;
-                height: 38%;
+                bottom: -20px;
+                right: -50px;
+                width: 80%;
+                height: 80%;
             }
         }
         
@@ -674,18 +669,17 @@
             .gif-container {
                 width: 560px;
                 height: 560px;
-                transform: translateY(-20px);
             }
             .hero-text h1 {
                 font-size: 74px;
             }
             
-            /* Esfera un poco más grande en pantallas muy grandes */
+            /* Esfera más grande y más abajo en pantallas muy grandes */
             .sphere-gif {
-                top: -10px;
-                right: -45px;
-                width: 50%;
-                height: 50%;
+                bottom: -50px;
+                right: -130px;
+                width: 92%;
+                height: 92%;
             }
         }
         
@@ -773,12 +767,12 @@
                 </div>
             </div>
             
-            <!-- GIFS APILADOS: esfere.gif detrás, eco.gif delante -->
+            <!-- GIFS APILADOS: esfera.gif detrás (ABAJO), eco.gif delante (CENTRO) -->
             <div class="gif-wrapper">
                 <div class="gif-container">
-                    <!-- CAPA TRASERA: esfera con glow y flotación — ESQUINA SUPERIOR -->
+                    <!-- CAPA TRASERA: esfera con glow y flotación — MÁS GRANDE Y MÁS ABAJO -->
                     <img class="sphere-gif" src="esfera.gif" alt="esfera animada fondo">
-                    <!-- CAPA FRONTAL: eco encima -->
+                    <!-- CAPA FRONTAL: eco en el centro -->
                     <img class="soda-gif" src="eco.gif" alt="soda animación creativa" 
                          onerror="this.onerror=null; this.src='https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzZkZjQxMDVlYzU5YzA4ZGY3YmI4MzU0M2M3MDI5Y2I4YzU5YzY4ZCZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/xT9IgGgFb7O6qR5q0/giphy.gif';">
                 </div>
